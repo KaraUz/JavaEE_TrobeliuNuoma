@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <Resource id="TrobelesDataSource" type="javax.sql.DataSource">#Thu Feb 18 21:08:15 EET 2016
+jdbcDriver=org.apache.derby.jdbc.ClientDriver
+password=trobele
+userName=trobele
+jdbcUrl=jdbc\:derby\://localhost\:1527/TrobelesDB
+</Resource>
+</resources>
