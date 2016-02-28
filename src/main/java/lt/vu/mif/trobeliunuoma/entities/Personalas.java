@@ -11,6 +11,8 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -32,13 +34,13 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Personalas.findById", query = "SELECT p FROM Personalas p WHERE p.id = :id"),
     @NamedQuery(name = "Personalas.findByVardas", query = "SELECT p FROM Personalas p WHERE p.vardas = :vardas"),
     @NamedQuery(name = "Personalas.findByPavarde", query = "SELECT p FROM Personalas p WHERE p.pavarde = :pavarde"),
-    @NamedQuery(name = "Personalas.findByAsmensNr", query = "SELECT p FROM Personalas p WHERE p.asmensNr = :asmensNr")})
+    @NamedQuery(name = "Personalas.findByAsmensKodas", query = "SELECT p FROM Personalas p WHERE p.asmensKodas = :asmensKodas")})
 public class Personalas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Size(max = 20)
@@ -47,19 +49,27 @@ public class Personalas implements Serializable {
     @Size(max = 20)
     @Column(name = "PAVARDE")
     private String pavarde;
-    @Column(name = "ASMENS_NR")
-    private Integer asmensNr;
-    @JoinTable(name = "PERSONALAS_TROBELES", joinColumns = {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 11)
+    @Column(name = "ASMENS_KODAS")
+    private String asmensKodas;
+    @JoinTable(name = "PERSONALAS_TROBELE", joinColumns = {
         @JoinColumn(name = "PERSONALAS_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "TROBELE_ID", referencedColumnName = "ID")})
     @ManyToMany
-    private List<Trobeles> trobelesList;
+    private List<Trobele> trobeleList;
 
     public Personalas() {
     }
 
     public Personalas(Integer id) {
         this.id = id;
+    }
+
+    public Personalas(Integer id, String asmensKodas) {
+        this.id = id;
+        this.asmensKodas = asmensKodas;
     }
 
     public Integer getId() {
@@ -86,26 +96,26 @@ public class Personalas implements Serializable {
         this.pavarde = pavarde;
     }
 
-    public Integer getAsmensNr() {
-        return asmensNr;
+    public String getAsmensKodas() {
+        return asmensKodas;
     }
 
-    public void setAsmensNr(Integer asmensNr) {
-        this.asmensNr = asmensNr;
+    public void setAsmensKodas(String asmensKodas) {
+        this.asmensKodas = asmensKodas;
     }
 
-    public List<Trobeles> getTrobelesList() {
-        return trobelesList;
+    public List<Trobele> getTrobeleList() {
+        return trobeleList;
     }
 
-    public void setTrobelesList(List<Trobeles> trobelesList) {
-        this.trobelesList = trobelesList;
+    public void setTrobeleList(List<Trobele> trobeleList) {
+        this.trobeleList = trobeleList;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.asmensNr);
+        int hash = 3;
+        hash = 79 * hash + Objects.hashCode(this.asmensKodas);
         return hash;
     }
 
@@ -121,7 +131,7 @@ public class Personalas implements Serializable {
             return false;
         }
         final Personalas other = (Personalas) obj;
-        if (!Objects.equals(this.asmensNr, other.asmensNr)) {
+        if (!Objects.equals(this.asmensKodas, other.asmensKodas)) {
             return false;
         }
         return true;

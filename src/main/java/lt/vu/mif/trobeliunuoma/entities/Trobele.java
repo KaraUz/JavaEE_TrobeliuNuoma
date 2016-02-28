@@ -11,6 +11,8 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -24,43 +26,43 @@ import javax.validation.constraints.Size;
  * @author Karolis
  */
 @Entity
-@Table(name = "TROBELES")
+@Table(name = "TROBELE")
 @NamedQueries({
-    @NamedQuery(name = "Trobeles.findAll", query = "SELECT t FROM Trobeles t"),
-    @NamedQuery(name = "Trobeles.findById", query = "SELECT t FROM Trobeles t WHERE t.id = :id"),
-    @NamedQuery(name = "Trobeles.findByPavadinimas", query = "SELECT t FROM Trobeles t WHERE t.pavadinimas = :pavadinimas"),
-    @NamedQuery(name = "Trobeles.findByKambariuSkaicius", query = "SELECT t FROM Trobeles t WHERE t.kambariuSkaicius = :kambariuSkaicius"),
-    @NamedQuery(name = "Trobeles.findByRezervuotas", query = "SELECT t FROM Trobeles t WHERE t.rezervuotas = :rezervuotas")})
-public class Trobeles implements Serializable {
+    @NamedQuery(name = "Trobele.findAll", query = "SELECT t FROM Trobele t"),
+    @NamedQuery(name = "Trobele.findById", query = "SELECT t FROM Trobele t WHERE t.id = :id"),
+    @NamedQuery(name = "Trobele.findByPavadinimas", query = "SELECT t FROM Trobele t WHERE t.pavadinimas = :pavadinimas"),
+    @NamedQuery(name = "Trobele.findByKambariuSkaicius", query = "SELECT t FROM Trobele t WHERE t.kambariuSkaicius = :kambariuSkaicius"),
+    @NamedQuery(name = "Trobele.findByRezervuotas", query = "SELECT t FROM Trobele t WHERE t.rezervuotas = :rezervuotas")})
+public class Trobele implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 20)
-    @Column(name = "PAVADINIMAS")
-    private String pavadinimas;
     @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "PAVADINIMAS")
+    private String pavadinimas;
     @Column(name = "KAMBARIU_SKAICIUS")
-    private int kambariuSkaicius;
+    private Integer kambariuSkaicius;
     @Column(name = "REZERVUOTAS")
     private Boolean rezervuotas;
-    @ManyToMany(mappedBy = "trobelesList")
+    @ManyToMany(mappedBy = "trobeleList")
     private List<Personalas> personalasList;
 
-    public Trobeles() {
+    public Trobele() {
     }
 
-    public Trobeles(Integer id) {
+    public Trobele(Integer id) {
         this.id = id;
     }
 
-    public Trobeles(Integer id, int kambariuSkaicius) {
+    public Trobele(Integer id, String pavadinimas) {
         this.id = id;
-        this.kambariuSkaicius = kambariuSkaicius;
+        this.pavadinimas = pavadinimas;
     }
 
     public Integer getId() {
@@ -79,11 +81,11 @@ public class Trobeles implements Serializable {
         this.pavadinimas = pavadinimas;
     }
 
-    public int getKambariuSkaicius() {
+    public Integer getKambariuSkaicius() {
         return kambariuSkaicius;
     }
 
-    public void setKambariuSkaicius(int kambariuSkaicius) {
+    public void setKambariuSkaicius(Integer kambariuSkaicius) {
         this.kambariuSkaicius = kambariuSkaicius;
     }
 
@@ -105,8 +107,8 @@ public class Trobeles implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.pavadinimas);
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.pavadinimas);
         return hash;
     }
 
@@ -121,7 +123,7 @@ public class Trobeles implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Trobeles other = (Trobeles) obj;
+        final Trobele other = (Trobele) obj;
         if (!Objects.equals(this.pavadinimas, other.pavadinimas)) {
             return false;
         }
@@ -129,10 +131,9 @@ public class Trobeles implements Serializable {
     }
 
 
-
     @Override
     public String toString() {
-        return "lt.vu.mif.trobeliunuoma.entities.Trobeles[ id=" + id + " ]";
+        return "lt.vu.mif.trobeliunuoma.entities.Trobele[ id=" + id + " ]";
     }
     
 }

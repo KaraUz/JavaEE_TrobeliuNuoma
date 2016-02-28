@@ -6,10 +6,11 @@
 package lt.vu.mif.trobeliunuoma.entities;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,20 +25,20 @@ import javax.validation.constraints.Size;
  * @author Karolis
  */
 @Entity
-@Table(name = "VARTOTOJAI")
+@Table(name = "VARTOTOJAS")
 @NamedQueries({
-    @NamedQuery(name = "Vartotojai.findAll", query = "SELECT v FROM Vartotojai v"),
-    @NamedQuery(name = "Vartotojai.findById", query = "SELECT v FROM Vartotojai v WHERE v.id = :id"),
-    @NamedQuery(name = "Vartotojai.findByVardas", query = "SELECT v FROM Vartotojai v WHERE v.vardas = :vardas"),
-    @NamedQuery(name = "Vartotojai.findByPavarde", query = "SELECT v FROM Vartotojai v WHERE v.pavarde = :pavarde"),
-    @NamedQuery(name = "Vartotojai.findByAsmensKodas", query = "SELECT v FROM Vartotojai v WHERE v.asmensKodas = :asmensKodas"),
-    @NamedQuery(name = "Vartotojai.findByRankas", query = "SELECT v FROM Vartotojai v WHERE v.rankas = :rankas")})
-public class Vartotojai implements Serializable {
+    @NamedQuery(name = "Vartotojas.findAll", query = "SELECT v FROM Vartotojas v"),
+    @NamedQuery(name = "Vartotojas.findById", query = "SELECT v FROM Vartotojas v WHERE v.id = :id"),
+    @NamedQuery(name = "Vartotojas.findByVardas", query = "SELECT v FROM Vartotojas v WHERE v.vardas = :vardas"),
+    @NamedQuery(name = "Vartotojas.findByPavarde", query = "SELECT v FROM Vartotojas v WHERE v.pavarde = :pavarde"),
+    @NamedQuery(name = "Vartotojas.findByAsmensKodas", query = "SELECT v FROM Vartotojas v WHERE v.asmensKodas = :asmensKodas"),
+    @NamedQuery(name = "Vartotojas.findByRankas", query = "SELECT v FROM Vartotojas v WHERE v.rankas = :rankas")})
+public class Vartotojas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Size(max = 20)
@@ -48,24 +49,23 @@ public class Vartotojai implements Serializable {
     private String pavarde;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "ASMENS_KODAS")
-    private String asmensKodas;
+    private int asmensKodas;
     @Size(max = 20)
     @Column(name = "RANKAS")
     private String rankas;
-    @JoinColumn(name = "PIRMUMO_GRUPE", referencedColumnName = "ID")
+    @JoinColumn(name = "PIRMUMO_GRUPE_ID", referencedColumnName = "ID")
     @ManyToOne
-    private PirmumoGrupes pirmumoGrupe;
+    private PirmumoGrupe pirmumoGrupeId;
 
-    public Vartotojai() {
+    public Vartotojas() {
     }
 
-    public Vartotojai(Integer id) {
+    public Vartotojas(Integer id) {
         this.id = id;
     }
 
-    public Vartotojai(Integer id, String asmensKodas) {
+    public Vartotojas(Integer id, int asmensKodas) {
         this.id = id;
         this.asmensKodas = asmensKodas;
     }
@@ -94,11 +94,11 @@ public class Vartotojai implements Serializable {
         this.pavarde = pavarde;
     }
 
-    public String getAsmensKodas() {
+    public int getAsmensKodas() {
         return asmensKodas;
     }
 
-    public void setAsmensKodas(String asmensKodas) {
+    public void setAsmensKodas(int asmensKodas) {
         this.asmensKodas = asmensKodas;
     }
 
@@ -110,18 +110,18 @@ public class Vartotojai implements Serializable {
         this.rankas = rankas;
     }
 
-    public PirmumoGrupes getPirmumoGrupe() {
-        return pirmumoGrupe;
+    public PirmumoGrupe getPirmumoGrupeId() {
+        return pirmumoGrupeId;
     }
 
-    public void setPirmumoGrupe(PirmumoGrupes pirmumoGrupe) {
-        this.pirmumoGrupe = pirmumoGrupe;
+    public void setPirmumoGrupeId(PirmumoGrupe pirmumoGrupeId) {
+        this.pirmumoGrupeId = pirmumoGrupeId;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.asmensKodas);
+        hash = 97 * hash + this.asmensKodas;
         return hash;
     }
 
@@ -136,18 +136,18 @@ public class Vartotojai implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Vartotojai other = (Vartotojai) obj;
-        if (!Objects.equals(this.asmensKodas, other.asmensKodas)) {
+        final Vartotojas other = (Vartotojas) obj;
+        if (this.asmensKodas != other.asmensKodas) {
             return false;
         }
         return true;
     }
 
-
+  
 
     @Override
     public String toString() {
-        return "lt.vu.mif.trobeliunuoma.entities.Vartotojai[ id=" + id + " ]";
+        return "lt.vu.mif.trobeliunuoma.entities.Vartotojas[ id=" + id + " ]";
     }
     
 }

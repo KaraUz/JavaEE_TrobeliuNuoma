@@ -11,6 +11,8 @@ import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -24,40 +26,40 @@ import javax.validation.constraints.Size;
  * @author Karolis
  */
 @Entity
-@Table(name = "PIRMUMO_GRUPES")
+@Table(name = "PIRMUMO_GRUPE")
 @NamedQueries({
-    @NamedQuery(name = "PirmumoGrupes.findAll", query = "SELECT p FROM PirmumoGrupes p"),
-    @NamedQuery(name = "PirmumoGrupes.findById", query = "SELECT p FROM PirmumoGrupes p WHERE p.id = :id"),
-    @NamedQuery(name = "PirmumoGrupes.findByPrioritetas", query = "SELECT p FROM PirmumoGrupes p WHERE p.prioritetas = :prioritetas"),
-    @NamedQuery(name = "PirmumoGrupes.findByPavadinimas", query = "SELECT p FROM PirmumoGrupes p WHERE p.pavadinimas = :pavadinimas")})
-public class PirmumoGrupes implements Serializable {
+    @NamedQuery(name = "PirmumoGrupe.findAll", query = "SELECT p FROM PirmumoGrupe p"),
+    @NamedQuery(name = "PirmumoGrupe.findById", query = "SELECT p FROM PirmumoGrupe p WHERE p.id = :id"),
+    @NamedQuery(name = "PirmumoGrupe.findByPavadinimas", query = "SELECT p FROM PirmumoGrupe p WHERE p.pavadinimas = :pavadinimas"),
+    @NamedQuery(name = "PirmumoGrupe.findByPrioritetas", query = "SELECT p FROM PirmumoGrupe p WHERE p.prioritetas = :prioritetas")})
+public class PirmumoGrupe implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "PRIORITETAS")
-    private int prioritetas;
-    @Size(max = 20)
+    @Size(min = 1, max = 20)
     @Column(name = "PAVADINIMAS")
     private String pavadinimas;
-    @OneToMany(mappedBy = "pirmumoGrupe")
-    private List<Vartotojai> vartotojaiList;
+    @Column(name = "PRIORITETAS")
+    private Integer prioritetas;
+    @OneToMany(mappedBy = "pirmumoGrupeId")
+    private List<Vartotojas> vartotojasList;
 
-    public PirmumoGrupes() {
+    public PirmumoGrupe() {
     }
 
-    public PirmumoGrupes(Integer id) {
+    public PirmumoGrupe(Integer id) {
         this.id = id;
     }
 
-    public PirmumoGrupes(Integer id, int prioritetas) {
+    public PirmumoGrupe(Integer id, String pavadinimas) {
         this.id = id;
-        this.prioritetas = prioritetas;
+        this.pavadinimas = pavadinimas;
     }
 
     public Integer getId() {
@@ -68,14 +70,6 @@ public class PirmumoGrupes implements Serializable {
         this.id = id;
     }
 
-    public int getPrioritetas() {
-        return prioritetas;
-    }
-
-    public void setPrioritetas(int prioritetas) {
-        this.prioritetas = prioritetas;
-    }
-
     public String getPavadinimas() {
         return pavadinimas;
     }
@@ -84,18 +78,26 @@ public class PirmumoGrupes implements Serializable {
         this.pavadinimas = pavadinimas;
     }
 
-    public List<Vartotojai> getVartotojaiList() {
-        return vartotojaiList;
+    public Integer getPrioritetas() {
+        return prioritetas;
     }
 
-    public void setVartotojaiList(List<Vartotojai> vartotojaiList) {
-        this.vartotojaiList = vartotojaiList;
+    public void setPrioritetas(Integer prioritetas) {
+        this.prioritetas = prioritetas;
+    }
+
+    public List<Vartotojas> getVartotojasList() {
+        return vartotojasList;
+    }
+
+    public void setVartotojasList(List<Vartotojas> vartotojasList) {
+        this.vartotojasList = vartotojasList;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.pavadinimas);
+        int hash = 5;
+        hash = 79 * hash + Objects.hashCode(this.pavadinimas);
         return hash;
     }
 
@@ -110,7 +112,7 @@ public class PirmumoGrupes implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final PirmumoGrupes other = (PirmumoGrupes) obj;
+        final PirmumoGrupe other = (PirmumoGrupe) obj;
         if (!Objects.equals(this.pavadinimas, other.pavadinimas)) {
             return false;
         }
@@ -118,10 +120,9 @@ public class PirmumoGrupes implements Serializable {
     }
 
 
-
     @Override
     public String toString() {
-        return "lt.vu.mif.trobeliunuoma.entities.PirmumoGrupes[ id=" + id + " ]";
+        return "lt.vu.mif.trobeliunuoma.entities.PirmumoGrupe[ id=" + id + " ]";
     }
     
 }
