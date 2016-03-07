@@ -18,12 +18,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Version;
 
 /**
  *
- * @author Karolis
+ * @author B
  */
 @Entity
 @Table(name = "TROBELE")
@@ -32,7 +31,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Trobele.findById", query = "SELECT t FROM Trobele t WHERE t.id = :id"),
     @NamedQuery(name = "Trobele.findByPavadinimas", query = "SELECT t FROM Trobele t WHERE t.pavadinimas = :pavadinimas"),
     @NamedQuery(name = "Trobele.findByKambariuSkaicius", query = "SELECT t FROM Trobele t WHERE t.kambariuSkaicius = :kambariuSkaicius"),
-    @NamedQuery(name = "Trobele.findByRezervuotas", query = "SELECT t FROM Trobele t WHERE t.rezervuotas = :rezervuotas")})
+    @NamedQuery(name = "Trobele.findByRezervuotas", query = "SELECT t FROM Trobele t WHERE t.rezervuotas = :rezervuotas"),
+    @NamedQuery(name = "Trobele.findByOptLockVersion", query = "SELECT t FROM Trobele t WHERE t.optLockVersion = :optLockVersion")})
 public class Trobele implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,14 +42,15 @@ public class Trobele implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "PAVADINIMAS")
     private String pavadinimas;
     @Column(name = "KAMBARIU_SKAICIUS")
     private Integer kambariuSkaicius;
     @Column(name = "REZERVUOTAS")
     private Boolean rezervuotas;
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private Integer optLockVersion;
     @ManyToMany(mappedBy = "trobeleList")
     private List<Personalas> personalasList;
 
@@ -97,6 +98,14 @@ public class Trobele implements Serializable {
         this.rezervuotas = rezervuotas;
     }
 
+    public Integer getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(Integer optLockVersion) {
+        this.optLockVersion = optLockVersion;
+    }
+
     public List<Personalas> getPersonalasList() {
         return personalasList;
     }
@@ -107,8 +116,8 @@ public class Trobele implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 89 * hash + Objects.hashCode(this.pavadinimas);
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.pavadinimas);
         return hash;
     }
 
@@ -130,6 +139,7 @@ public class Trobele implements Serializable {
         return true;
     }
 
+    
 
     @Override
     public String toString() {

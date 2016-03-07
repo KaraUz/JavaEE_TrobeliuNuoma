@@ -18,12 +18,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Version;
 
 /**
  *
- * @author Karolis
+ * @author B
  */
 @Entity
 @Table(name = "PIRMUMO_GRUPE")
@@ -31,7 +30,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "PirmumoGrupe.findAll", query = "SELECT p FROM PirmumoGrupe p"),
     @NamedQuery(name = "PirmumoGrupe.findById", query = "SELECT p FROM PirmumoGrupe p WHERE p.id = :id"),
     @NamedQuery(name = "PirmumoGrupe.findByPavadinimas", query = "SELECT p FROM PirmumoGrupe p WHERE p.pavadinimas = :pavadinimas"),
-    @NamedQuery(name = "PirmumoGrupe.findByPrioritetas", query = "SELECT p FROM PirmumoGrupe p WHERE p.prioritetas = :prioritetas")})
+    @NamedQuery(name = "PirmumoGrupe.findByPrioritetas", query = "SELECT p FROM PirmumoGrupe p WHERE p.prioritetas = :prioritetas"),
+    @NamedQuery(name = "PirmumoGrupe.findByOptLockVersion", query = "SELECT p FROM PirmumoGrupe p WHERE p.optLockVersion = :optLockVersion")})
 public class PirmumoGrupe implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,12 +41,13 @@ public class PirmumoGrupe implements Serializable {
     @Column(name = "ID")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "PAVADINIMAS")
     private String pavadinimas;
     @Column(name = "PRIORITETAS")
     private Integer prioritetas;
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private Integer optLockVersion;
     @OneToMany(mappedBy = "pirmumoGrupeId")
     private List<Vartotojas> vartotojasList;
 
@@ -86,6 +87,14 @@ public class PirmumoGrupe implements Serializable {
         this.prioritetas = prioritetas;
     }
 
+    public Integer getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(Integer optLockVersion) {
+        this.optLockVersion = optLockVersion;
+    }
+
     public List<Vartotojas> getVartotojasList() {
         return vartotojasList;
     }
@@ -96,8 +105,8 @@ public class PirmumoGrupe implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.pavadinimas);
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.pavadinimas);
         return hash;
     }
 
@@ -119,6 +128,7 @@ public class PirmumoGrupe implements Serializable {
         return true;
     }
 
+    
 
     @Override
     public String toString() {

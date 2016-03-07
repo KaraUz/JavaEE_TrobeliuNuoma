@@ -20,12 +20,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Version;
 
 /**
  *
- * @author Karolis
+ * @author B
  */
 @Entity
 @Table(name = "PERSONALAS")
@@ -34,7 +33,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Personalas.findById", query = "SELECT p FROM Personalas p WHERE p.id = :id"),
     @NamedQuery(name = "Personalas.findByVardas", query = "SELECT p FROM Personalas p WHERE p.vardas = :vardas"),
     @NamedQuery(name = "Personalas.findByPavarde", query = "SELECT p FROM Personalas p WHERE p.pavarde = :pavarde"),
-    @NamedQuery(name = "Personalas.findByAsmensKodas", query = "SELECT p FROM Personalas p WHERE p.asmensKodas = :asmensKodas")})
+    @NamedQuery(name = "Personalas.findByAsmensKodas", query = "SELECT p FROM Personalas p WHERE p.asmensKodas = :asmensKodas"),
+    @NamedQuery(name = "Personalas.findByOptLockVersion", query = "SELECT p FROM Personalas p WHERE p.optLockVersion = :optLockVersion")})
 public class Personalas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,17 +43,16 @@ public class Personalas implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 20)
     @Column(name = "VARDAS")
     private String vardas;
-    @Size(max = 20)
     @Column(name = "PAVARDE")
     private String pavarde;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 11)
     @Column(name = "ASMENS_KODAS")
     private String asmensKodas;
+    @Version
+    @Column(name = "OPT_LOCK_VERSION")
+    private Integer optLockVersion;
     @JoinTable(name = "PERSONALAS_TROBELE", joinColumns = {
         @JoinColumn(name = "PERSONALAS_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "TROBELE_ID", referencedColumnName = "ID")})
@@ -104,6 +103,14 @@ public class Personalas implements Serializable {
         this.asmensKodas = asmensKodas;
     }
 
+    public Integer getOptLockVersion() {
+        return optLockVersion;
+    }
+
+    public void setOptLockVersion(Integer optLockVersion) {
+        this.optLockVersion = optLockVersion;
+    }
+
     public List<Trobele> getTrobeleList() {
         return trobeleList;
     }
@@ -114,8 +121,8 @@ public class Personalas implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + Objects.hashCode(this.asmensKodas);
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.asmensKodas);
         return hash;
     }
 
@@ -136,7 +143,6 @@ public class Personalas implements Serializable {
         }
         return true;
     }
-
 
 
     @Override
