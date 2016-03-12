@@ -6,8 +6,12 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from mif!!!!!<br/>
-    #{trobeliuNuomaBean.hello()}
+        Hey!<br/>
+        Your number is #{trobeliuNuomaBean.number}<br/>  
+        <h:form>
+            <h:commandButton type="submit" value="Increase" action="#{trobeliuNuomaBean.add()}" />
+        </h:form>
+    
     </h:body>
 </html>
 
